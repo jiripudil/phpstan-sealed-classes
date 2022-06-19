@@ -1,0 +1,3 @@
+services:
+	- factory: JiriPudil\SealedClasses\SealedClassRule
+	  tags: [phpstan.rules.rule]

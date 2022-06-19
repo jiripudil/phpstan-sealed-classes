@@ -1,0 +1,48 @@
+{
+	"name": "jiripudil/phpstan-sealed-classes",
+	"description": "Sealed classes support for PHPStan.",
+	"type": "phpstan-extension",
+	"license": "MIT",
+	"authors": [
+		{
+			"name": "Jiří Pudil",
+			"email": "me@jiripudil.cz",
+			"homepage": "https://jiripudil.cz"
+		}
+	],
+	"require": {
+		"php": "^8.0",
+		"phpstan/phpstan": "^1.3"
+	},
+	"require-dev": {
+		"php-parallel-lint/php-parallel-lint": "^1.2",
+		"phpstan/phpstan-phpunit": "^1.1",
+		"phpstan/phpstan-strict-rules": "^1.2",
+		"phpunit/phpunit": "^9.3"
+	},
+	"autoload": {
+		"psr-4": {
+			"JiriPudil\\SealedClasses\\": "src/"
+		}
+	},
+	"autoload-dev": {
+		"psr-4": {
+			"JiriPudil\\SealedClasses\\": "tests/"
+		}
+	},
+	"scripts": {
+		"tests": "phpunit",
+		"phpstan": "phpstan analyse -l max src tests",
+		"lint": "parallel-lint src tests"
+	},
+	"extra": {
+		"phpstan": {
+			"includes": ["extension.neon"]
+		}
+	},
+	"config": {
+		"sort-packages": true
+	},
+	"minimum-stability": "dev",
+	"prefer-stable": true
+}
