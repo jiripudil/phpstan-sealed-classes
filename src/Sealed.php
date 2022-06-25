@@ -10,9 +10,9 @@ use Attribute;
 final class Sealed
 {
 	/**
-	 * @param class-string[] $permits
+	 * @param non-empty-array<class-string> $permits
 	 */
 	public function __construct(
-		public array $permits
+		public array $permits,
 	) {}
 }

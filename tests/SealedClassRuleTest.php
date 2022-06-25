@@ -18,14 +18,6 @@ final class SealedClassRuleTest extends RuleTestCase
 
 	public function testRule(): void
 	{
-		require __DIR__ . '/data/empty-permits.php';
-		$this->analyse(
-			[__DIR__ . '/data/empty-permits.php'],
-			[
-				['#[Sealed] class SealedClassWithEmptyPermits does not permit any descendant.', 5],
-			],
-		);
-
 		require __DIR__ . '/data/non-abstract-sealed-class.php';
 		$this->analyse(
 			[__DIR__ . '/data/non-abstract-sealed-class.php'],

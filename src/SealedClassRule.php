@@ -6,11 +6,15 @@ namespace JiriPudil\SealedClasses;
 
 use PhpParser\Node;
 use PHPStan\Analyser\Scope;
+use PHPStan\BetterReflection\Reflection\Adapter\FakeReflectionAttribute;
+use PHPStan\BetterReflection\Reflection\Adapter\ReflectionAttribute;
 use PHPStan\Node\InClassNode;
 use PHPStan\Rules\Rule;
 use PHPStan\Rules\RuleErrorBuilder;
+use PHPStan\Type\Constant\ConstantArrayType;
+use PHPStan\Type\Constant\ConstantStringType;
 use function array_values;
-use function assert;
+use function count;
 use function in_array;
 use function sprintf;
 
@@ -32,8 +36,8 @@ final class SealedClassRule implements Rule
 		$classReflection = $node->getClassReflection();
 		$className = $classReflection->getName();
 
-		$parentClass = $classReflection->getParentClass();
 		$parents = array_values($classReflection->getImmediateInterfaces());
+		$parentClass = $classReflection->getParentClass();
 		if ($parentClass !== null) {
 			$parents[] = $parentClass;
 		}
@@ -43,10 +47,8 @@ final class SealedClassRule implements Rule
 		foreach ($parents as $parentReflection) {
 			$sealedAttributes = $parentReflection->getNativeReflection()->getAttributes(Sealed::class);
 			foreach ($sealedAttributes as $sealedAttribute) {
-				$sealed = $sealedAttribute->newInstance();
-				assert($sealed instanceof Sealed);
-
-				if ( ! in_array($className, $sealed->permits, true)) {
+				$permittedClassNames = $this->extractPermittedDescendants($sealedAttribute, $scope);
+				if ( ! in_array($className, $permittedClassNames, true)) {
 					$messages[] = RuleErrorBuilder::message(sprintf(
 						'%s %s is not allowed to %s a #[Sealed] %s %s.',
 						$classReflection->isClass() ? 'Class' : 'Interface',
@@ -60,33 +62,57 @@ final class SealedClassRule implements Rule
 		}
 
 		$sealedAttributes = $classReflection->getNativeReflection()->getAttributes(Sealed::class);
-		foreach ($sealedAttributes as $sealedAttribute) {
-			$sealed = $sealedAttribute->newInstance();
-			assert($sealed instanceof Sealed);
+		if (count($sealedAttributes) === 0) {
+			return $messages;
+		}
 
-			if ( ! $classReflection->isClass() && ! $classReflection->isInterface()) {
-				$messages[] = RuleErrorBuilder::message(
-					'#[Sealed] can only be used over an abstract class or an interface.'
-				)->build();
-				continue;
-			}
+		if ( ! $classReflection->isClass() && ! $classReflection->isInterface()) {
+			$messages[] = RuleErrorBuilder::message(
+				'#[Sealed] can only be used over an abstract class or an interface.'
+			)->build();
+			return $messages;
+		}
 
-			if ($classReflection->isClass() && ! $classReflection->isAbstract()) {
-				$messages[] = RuleErrorBuilder::message(sprintf(
-					'#[Sealed] class %s must be abstract.',
-					$className,
-				))->build();
-			}
-
-			if ($sealed->permits === []) {
-				$messages[] = RuleErrorBuilder::message(sprintf(
-					'#[Sealed] %s %s does not permit any descendant.',
-					$classReflection->isClass() ? 'class' : 'interface',
-					$className,
-				))->build();
-			}
+		if ($classReflection->isClass() && ! $classReflection->isAbstract()) {
+			$messages[] = RuleErrorBuilder::message(sprintf(
+				'#[Sealed] class %s must be abstract.',
+				$className,
+			))->build();
 		}
 
 		return $messages;
+	}
+
+	/**
+	 * @return class-string[]
+	 */
+	private function extractPermittedDescendants(
+		FakeReflectionAttribute|ReflectionAttribute $sealedAttribute,
+		Scope $scope,
+	): array
+	{
+		$sealed = $sealedAttribute->getArgumentsExpressions();
+		if ( ! \array_key_exists(0, $sealed) && ! \array_key_exists('permits', $sealed)) {
+			return [];
+		}
+
+		$permitsType = $scope->getType($sealed[0] ?? $sealed['permits']);
+
+		if ( ! $permitsType instanceof ConstantArrayType) {
+			return [];
+		}
+
+		$permittedClassNames = [];
+		foreach ($permitsType->getValueTypes() as $valueType) {
+			if ( ! $valueType instanceof ConstantStringType || ! $valueType->isClassString()) {
+				continue;
+			}
+
+			/** @var class-string $value */
+			$value = $valueType->getValue();
+			$permittedClassNames[] = $value;
+		}
+
+		return $permittedClassNames;
 	}
 }
