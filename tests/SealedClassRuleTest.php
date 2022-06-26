@@ -13,7 +13,9 @@ final class SealedClassRuleTest extends RuleTestCase
 {
 	protected function getRule(): SealedClassRule
 	{
-		return new SealedClassRule();
+		return new SealedClassRule(
+			$this->createReflectionProvider(),
+		);
 	}
 
 	public function testRule(): void
@@ -23,6 +25,15 @@ final class SealedClassRuleTest extends RuleTestCase
 			[__DIR__ . '/data/non-abstract-sealed-class.php'],
 			[
 				['#[Sealed] class NonAbstractSealedClass must be abstract.', 5],
+			],
+		);
+
+		require __DIR__ . '/data/not-direct-subtype.php';
+		$this->analyse(
+			[__DIR__ . '/data/not-direct-subtype.php'],
+			[
+				['Type NotADirectSubtype is not a direct subtype of #[Sealed] class AbstractSealedClass.', 5],
+				['Type NotADirectSubtypeEither is not a direct subtype of #[Sealed] class AbstractSealedClass.', 5],
 			],
 		);
 

@@ -9,6 +9,7 @@ use PHPStan\Analyser\Scope;
 use PHPStan\BetterReflection\Reflection\Adapter\FakeReflectionAttribute;
 use PHPStan\BetterReflection\Reflection\Adapter\ReflectionAttribute;
 use PHPStan\Node\InClassNode;
+use PHPStan\Reflection\ReflectionProvider;
 use PHPStan\Rules\Rule;
 use PHPStan\Rules\RuleErrorBuilder;
 use PHPStan\Type\Constant\ConstantArrayType;
@@ -24,6 +25,12 @@ use function sprintf;
  */
 final class SealedClassRule implements Rule
 {
+	public function __construct(
+		private ReflectionProvider $reflectionProvider,
+	)
+	{
+	}
+
 	public function getNodeType(): string
 	{
 		return InClassNode::class;
@@ -81,6 +88,34 @@ final class SealedClassRule implements Rule
 			$messages[] = RuleErrorBuilder::message(sprintf(
 				'#[Sealed] class %s must be abstract.',
 				$className,
+			))->build();
+		}
+
+		$sealedAttribute = reset($sealedAttributes);
+		$permittedClassNames = $this->extractPermittedDescendants($sealedAttribute, $scope);
+		foreach ($permittedClassNames as $permittedClassName) {
+			if ( ! $this->reflectionProvider->hasClass($permittedClassName)) {
+				// ignore, will be reported elsewhere
+				continue;
+			}
+
+			$permittedClass = $this->reflectionProvider->getClass($permittedClassName);
+
+			if ($permittedClass->getParentClass()?->getName() === $className) {
+				continue;
+			}
+
+			foreach ($permittedClass->getImmediateInterfaces() as $immediateInterface) {
+				if ($immediateInterface->getName() === $className) {
+					continue 2;
+				}
+			}
+
+			$messages[] = RuleErrorBuilder::message(sprintf(
+				'Type %s is not a direct subtype of #[Sealed] %s %s.',
+				$permittedClassName,
+				$classReflection->isClass() ? 'class' : 'interface',
+				$classReflection->getName(),
 			))->build();
 		}
 
