@@ -30,7 +30,7 @@ final class SealedClassRuleTest extends RuleTestCase
 		$this->analyse(
 			[__DIR__ . '/data/sealed-class.php'],
 			[
-				['Class DisallowedDescendant is not allowed to extend a #[Sealed] class SealedClass.', 10],
+				['Class DisallowedDescendant is not allowed to extend a #[Sealed] class SealedClass.', 11],
 			],
 		);
 

@@ -9,3 +9,4 @@ interface AllowedInterfaceDescendant extends SealedInterface {}
 interface DisallowedInterfaceDescendant extends SealedInterface {}
 class AllowedImplementation implements SealedInterface {}
 class DisallowedImplementation implements SealedInterface {}
+class IndirectImplementation implements AllowedInterfaceDescendant {}
