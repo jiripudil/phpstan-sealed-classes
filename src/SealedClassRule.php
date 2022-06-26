@@ -16,6 +16,7 @@ use PHPStan\Type\Constant\ConstantStringType;
 use function array_values;
 use function count;
 use function in_array;
+use function reset;
 use function sprintf;
 
 /**
@@ -46,18 +47,21 @@ final class SealedClassRule implements Rule
 
 		foreach ($parents as $parentReflection) {
 			$sealedAttributes = $parentReflection->getNativeReflection()->getAttributes(Sealed::class);
-			foreach ($sealedAttributes as $sealedAttribute) {
-				$permittedClassNames = $this->extractPermittedDescendants($sealedAttribute, $scope);
-				if ( ! in_array($className, $permittedClassNames, true)) {
-					$messages[] = RuleErrorBuilder::message(sprintf(
-						'%s %s is not allowed to %s a #[Sealed] %s %s.',
-						$classReflection->isClass() ? 'Class' : 'Interface',
-						$className,
-						$classReflection->isClass() && $parentReflection->isInterface() ? 'implement' : 'extend',
-						$parentReflection->isClass() ? 'class' : 'interface',
-						$parentReflection->getName(),
-					))->build();
-				}
+			if (count($sealedAttributes) === 0) {
+				continue;
+			}
+
+			$sealedAttribute = reset($sealedAttributes);
+			$permittedClassNames = $this->extractPermittedDescendants($sealedAttribute, $scope);
+			if ( ! in_array($className, $permittedClassNames, true)) {
+				$messages[] = RuleErrorBuilder::message(sprintf(
+					'%s %s is not allowed to %s a #[Sealed] %s %s.',
+					$classReflection->isClass() ? 'Class' : 'Interface',
+					$className,
+					$classReflection->isClass() && $parentReflection->isInterface() ? 'implement' : 'extend',
+					$parentReflection->isClass() ? 'class' : 'interface',
+					$parentReflection->getName(),
+				))->build();
 			}
 		}
 
