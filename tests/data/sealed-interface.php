@@ -1,5 +1,7 @@
 <?php
 
+namespace SealedInterfaceDataset;
+
 use JiriPudil\SealedClasses\Sealed;
 
 #[Sealed(permits: [AllowedInterfaceDescendant::class, AllowedImplementation::class])]

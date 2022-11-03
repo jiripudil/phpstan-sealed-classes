@@ -1,5 +1,7 @@
 <?php
 
+namespace NonAbstractSealedClassDataset;
+
 use JiriPudil\SealedClasses\Sealed;
 
 #[Sealed(permits: [AllowedButInvalidDescendant::class])]
