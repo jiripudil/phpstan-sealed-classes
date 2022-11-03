@@ -12,7 +12,7 @@ composer require --dev jiripudil/phpstan-sealed-classes
 
 If you are using [`phpstan/extension-installer`](https://github.com/phpstan/extension-installer), this extension's configuration will be automatically enabled.
 
-Otherwise you need to include it explicitly in your `phpstan.neon`:
+Otherwise, you need to include it explicitly in your `phpstan.neon`:
 
 ```neon
 includes:
@@ -42,11 +42,11 @@ class DisallowedImplementation implements SealedInterface {}
 While the first two classes will be allowed, PHPStan will report an error for the third:
 
 ```
------- ---------------------------------------------------------------------------------------------------
+------ ----------------------------------------------------------------------------------
  Line   sealed-interface.php
------- ---------------------------------------------------------------------------------------------------
- 10     Class DisallowedImplementation is not allowed to implement a #[Sealed] interface SealedInterface.
------- ---------------------------------------------------------------------------------------------------
+------ ----------------------------------------------------------------------------------
+ 10     Type DisallowedImplementation is not allowed to be a subtype of SealedInterface.
+------ ----------------------------------------------------------------------------------
 ```
 
 Note that the restrictions do not apply to indirect subclasses. If a direct subclass of a sealed class is not sealed itself, it can be further extended without raising any errors. This code is perfectly fine:
