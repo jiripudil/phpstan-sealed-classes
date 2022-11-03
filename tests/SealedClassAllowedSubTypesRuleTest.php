@@ -24,6 +24,7 @@ final class SealedClassAllowedSubTypesRuleTest extends RuleTestCase
 			[__DIR__ . '/data/sealed-class.php'],
 			[
 				['Type SealedClassDataset\\DisallowedDescendant is not allowed to be a subtype of SealedClassDataset\\SealedClass.', 13],
+				['Type SealedClassDataset\\DisallowedResealedDescendant is not allowed to be a subtype of SealedClassDataset\\ResealedClass.', 21],
 			],
 		);
 
