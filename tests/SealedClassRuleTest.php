@@ -14,7 +14,7 @@ final class SealedClassRuleTest extends RuleTestCase
 	protected function getRule(): SealedClassRule
 	{
 		return new SealedClassRule(
-			$this->createReflectionProvider(),
+			self::createReflectionProvider(),
 		);
 	}
 

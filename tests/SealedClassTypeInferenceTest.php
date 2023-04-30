@@ -8,10 +8,10 @@ use PHPStan\Testing\TypeInferenceTestCase;
 
 final class SealedClassTypeInferenceTest extends TypeInferenceTestCase
 {
-	public function dataFileAsserts(): iterable
+	public static function dataFileAsserts(): iterable
 	{
 		require __DIR__ . '/data/allowed-subtypes-extension.php';
-		yield from $this->gatherAssertTypes(__DIR__ . '/data/allowed-subtypes-extension.php');
+		yield from self::gatherAssertTypes(__DIR__ . '/data/allowed-subtypes-extension.php');
 	}
 
 	/**
