@@ -1,5 +1,11 @@
 # Sealed classes with PHPStan
 
+[![Build Status](https://img.shields.io/github/actions/workflow/status/jiripudil/phpstan-sealed-classes/test.yml?branch=main)](https://github.com/jiripudil/phpstan-sealed-classes/actions?query=workflow%3ATest)
+[![latest version](https://img.shields.io/packagist/v/jiripudil/phpstan-sealed-classes)](https://packagist.org/packages/jiripudil/phpstan-sealed-classes)
+[![license](https://img.shields.io/packagist/l/jiripudil/phpstan-sealed-classes)](https://packagist.org/packages/jiripudil/phpstan-sealed-classes)
+[![monthly downloads](https://img.shields.io/packagist/dm/jiripudil/phpstan-sealed-classes)](https://packagist.org/packages/jiripudil/phpstan-sealed-classes)
+[![downloads total](https://img.shields.io/packagist/dt/jiripudil/phpstan-sealed-classes)](https://packagist.org/packages/jiripudil/phpstan-sealed-classes)
+
 This extension adds support for sealed classes and interfaces to PHPStan.
 
 ## Installation
