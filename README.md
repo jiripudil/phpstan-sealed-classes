@@ -24,7 +24,7 @@ includes:
 
 Sealed classes and interfaces allow developers to restrict class hierarchies: a sealed class can only be subclassed by classes that are explicitly permitted to do so. The same applies to sealed interfaces and their implementations. In a way, sealed classes are similar to enumerations, with an important distinction: while enums are singletons, a subclass of a sealed class can have _multiple_ instances, each with its own state.
 
-You can seal an abstract class or an interface by attributing it as `#[Sealed]`. The attribute accepts a list of permitted descendants or implementations:
+You can seal a class or an interface by attributing it as `#[Sealed]`. The attribute accepts a list of permitted descendants or implementations:
 
 ```php
 <?php

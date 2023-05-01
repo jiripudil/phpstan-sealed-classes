@@ -23,9 +23,7 @@ final class SealedClassRuleTest extends RuleTestCase
 		require __DIR__ . '/data/non-abstract-sealed-class.php';
 		$this->analyse(
 			[__DIR__ . '/data/non-abstract-sealed-class.php'],
-			[
-				['#[Sealed] class NonAbstractSealedClassDataset\\NonAbstractSealedClass must be abstract.', 7],
-			],
+			[],
 		);
 
 		require __DIR__ . '/data/not-direct-subtype.php';

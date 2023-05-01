@@ -47,16 +47,9 @@ final class SealedClassRule implements Rule
 
 		if ( ! $classReflection->isClass() && ! $classReflection->isInterface()) {
 			$messages[] = RuleErrorBuilder::message(
-				'#[Sealed] can only be used over an abstract class or an interface.'
+				'#[Sealed] can only be used over a class or an interface.'
 			)->build();
 			return $messages;
-		}
-
-		if ($classReflection->isClass() && ! $classReflection->isAbstract()) {
-			$messages[] = RuleErrorBuilder::message(sprintf(
-				'#[Sealed] class %s must be abstract.',
-				$className,
-			))->build();
 		}
 
 		$sealedAttribute = reset($sealedAttributes);

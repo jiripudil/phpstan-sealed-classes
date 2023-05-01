@@ -46,6 +46,10 @@ final class SealedClassAllowedSubTypesClassReflectionExtension implements Allowe
 			$allowedSubTypes[] = new ObjectType($permittedClassName);
 		}
 
+		if ($classReflection->isClass() && ! $classReflection->isAbstract()) {
+			$allowedSubTypes[] = new ObjectType($classReflection->getName());
+		}
+
 		return $allowedSubTypes;
 	}
 }
