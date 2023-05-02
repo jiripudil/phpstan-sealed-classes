@@ -16,7 +16,7 @@ use function reset;
 final class SealedClassAllowedSubTypesClassReflectionExtension implements AllowedSubTypesClassReflectionExtension
 {
 	public function __construct(
-		private ScopeFactory $scopeFactory,
+		private readonly ScopeFactory $scopeFactory,
 	)
 	{
 	}

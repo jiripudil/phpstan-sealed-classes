@@ -13,6 +13,6 @@ final class Sealed
 	 * @param non-empty-array<class-string> $permits
 	 */
 	public function __construct(
-		public array $permits,
+		public readonly array $permits,
 	) {}
 }
