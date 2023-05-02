@@ -1,6 +1,6 @@
 <?php
 
-namespace AllowedSubTypesExtensionDataset;
+namespace AllowedSubTypesExtensionDataset\AbstractClass;
 
 use JiriPudil\SealedClasses\Sealed;
 use function PHPStan\Testing\assertType;
@@ -18,11 +18,11 @@ function foo(SealedClass $sealedClass): void
 		return;
 	}
 
-	assertType('AllowedSubTypesExtensionDataset\\SealedClass~AllowedSubTypesExtensionDataset\\FirstDescendant', $sealedClass);
+	assertType('AllowedSubTypesExtensionDataset\\AbstractClass\\SealedClass~AllowedSubTypesExtensionDataset\\AbstractClass\\FirstDescendant', $sealedClass);
 
 	if ($sealedClass instanceof SecondDescendant) {
 		return;
 	}
 
-	assertType('AllowedSubTypesExtensionDataset\\ThirdDescendant', $sealedClass);
+	assertType('AllowedSubTypesExtensionDataset\\AbstractClass\\ThirdDescendant', $sealedClass);
 }

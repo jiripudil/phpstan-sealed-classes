@@ -10,8 +10,14 @@ final class SealedClassTypeInferenceTest extends TypeInferenceTestCase
 {
 	public static function dataFileAsserts(): iterable
 	{
-		require __DIR__ . '/data/allowed-subtypes-extension.php';
-		yield from self::gatherAssertTypes(__DIR__ . '/data/allowed-subtypes-extension.php');
+		require __DIR__ . '/data/allowed-subtypes-interface.php';
+		yield from self::gatherAssertTypes(__DIR__ . '/data/allowed-subtypes-interface.php');
+
+		require __DIR__ . '/data/allowed-subtypes-abstract-class.php';
+		yield from self::gatherAssertTypes(__DIR__ . '/data/allowed-subtypes-abstract-class.php');
+
+		require __DIR__ . '/data/allowed-subtypes-non-abstract-class.php';
+		yield from self::gatherAssertTypes(__DIR__ . '/data/allowed-subtypes-non-abstract-class.php');
 	}
 
 	/**
