@@ -48,7 +48,9 @@ final class SealedClassRule implements Rule
 		if ( ! $classReflection->isClass() && ! $classReflection->isInterface()) {
 			$messages[] = RuleErrorBuilder::message(
 				'#[Sealed] can only be used over a class or an interface.'
-			)->build();
+			)
+				->identifier('sealedClass.invalidTarget')
+				->build();
 			return $messages;
 		}
 
@@ -77,7 +79,9 @@ final class SealedClassRule implements Rule
 				$permittedClassName,
 				$classReflection->isClass() ? 'class' : 'interface',
 				$classReflection->getName(),
-			))->build();
+			))
+				->identifier('sealedClass.notDirectSubtype')
+				->build();
 		}
 
 		return $messages;
