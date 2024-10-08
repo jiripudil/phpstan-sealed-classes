@@ -36,7 +36,7 @@ final class SealedClassUtils
 		foreach ($permitsType->getConstantArrays() as $constantArray) {
 			foreach ($constantArray->getValueTypes() as $valueType) {
 				foreach ($valueType->getConstantStrings() as $constantString) {
-					if ( ! $constantString->isClassStringType()->yes()) {
+					if ( ! $constantString->isClassString()->yes()) {
 						continue;
 					}
 
