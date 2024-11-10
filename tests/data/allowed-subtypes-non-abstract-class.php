@@ -24,7 +24,7 @@ function foo(SealedClass $sealedClass): void
 		return;
 	}
 
-	assertType('AllowedSubTypesExtensionDataset\\NonAbstractClass\\SealedClass~AllowedSubTypesExtensionDataset\\NonAbstractClass\\FirstDescendant|AllowedSubTypesExtensionDataset\\NonAbstractClass\\SecondDescendant', $sealedClass);
+	assertType('AllowedSubTypesExtensionDataset\\NonAbstractClass\\SealedClass~(AllowedSubTypesExtensionDataset\\NonAbstractClass\\FirstDescendant|AllowedSubTypesExtensionDataset\\NonAbstractClass\\SecondDescendant)', $sealedClass);
 
 	if ($sealedClass instanceof ThirdDescendant) {
 		return;
