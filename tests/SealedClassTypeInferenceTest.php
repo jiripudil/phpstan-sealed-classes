@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace JiriPudil\SealedClasses;
 
 use PHPStan\Testing\TypeInferenceTestCase;
+use PHPUnit\Framework\Attributes\DataProvider;
 
 final class SealedClassTypeInferenceTest extends TypeInferenceTestCase
 {
@@ -20,9 +21,7 @@ final class SealedClassTypeInferenceTest extends TypeInferenceTestCase
 		yield from self::gatherAssertTypes(__DIR__ . '/data/allowed-subtypes-non-abstract-class.php');
 	}
 
-	/**
-	 * @dataProvider dataFileAsserts
-	 */
+	#[DataProvider('dataFileAsserts')]
 	public function testInference(string $assertType, string $file, mixed ...$args): void
 	{
 		$this->assertFileAsserts($assertType, $file, ...$args);
