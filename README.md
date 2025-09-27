@@ -1,3 +1,6 @@
+> [!IMPORTANT]
+> This package is obsolete. You can now use the built-in [`@phpstan-sealed` annotation](https://phpstan.org/writing-php-code/phpdocs-basics#sealed-classes) introduced in PHPStan 2.1.18.
+
 # Sealed classes with PHPStan
 
 [![Build Status](https://img.shields.io/github/actions/workflow/status/jiripudil/phpstan-sealed-classes/test.yml?branch=main)](https://github.com/jiripudil/phpstan-sealed-classes/actions?query=workflow%3ATest)
